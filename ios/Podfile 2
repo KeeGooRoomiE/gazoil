@@ -3,7 +3,6 @@
 
 # CocoaPods analytics sends network stats synchronously affecting flutter build latency.
 ENV['COCOAPODS_DISABLE_STATS'] = 'true'
-ENV['YANDEX_MAPKIT_VARIANT'] = 'lite'
 
 platform :ios, '12.0'
 
@@ -32,6 +31,10 @@ flutter_ios_podfile_setup
 
 target 'Runner' do
   use_frameworks!
+	# Облегченная библиотека, содержит только карту, слой пробок,
+	# LocationManager, UserLocationLayer
+	# и возможность скачивать офлайн-карты (только в платной версии).
+	pod 'YandexMapsMobile', '~> 4.6.1-lite'
   use_modular_headers!
 
   flutter_install_all_ios_pods File.dirname(File.realpath(__FILE__))
@@ -40,10 +43,5 @@ end
 post_install do |installer|
   installer.pods_project.targets.each do |target|
     flutter_additional_ios_build_settings(target)
-
-    # Exclude arm64 for simulators
-    target.build_configurations.each do |config|
-      config.build_settings['EXCLUDED_ARCHS[sdk=iphonesimulator*]'] = 'arm64'
-    end
   end
 end
